@@ -5,62 +5,50 @@
 #include <math.h>
 #include <locale.h>
 
-int main()
+double calculate_sin(double grad)
 {
-    setlocale(LC_CTYPE, "RUS");
-    double gr;
-    printf("Введите угол в градусах: ");
-    scanf("%lf", &gr);
-
-    double rad = gr * M_PI / 180.0;
-    double result = sin(rad);
-
-    printf("Результат: sin(%.0f градусов) = %.6f\n", gr, result);
-
-    double x, y, F;
-    double numerator, denominator;
- 
-    printf("Введите значение x:\n");
-    scanf("%lf", &x);
-    printf("Введите значение y:\n");
-    scanf("%lf", &y);
-
-    double num_exp = exp(x * x);
-    double num_cos = cos(x - 4);
-    numerator = num_exp + num_cos * num_cos;
-
-    double denom_atan = atan(x);
-    denominator = denom_atan + 5.2 * y;
-
-    F = numerator / denominator;
-
-    printf("x=%.6lf, F(x, y)=%.6lf\n", x, F);
-
+    double rad = grad * M_PI / 180.0;
+    return sin(rad);
+}
+double calculate_F(double x, double y)
+{
+    double numerator = exp(x * x) + pow(cos(x - 4), 2);
+    double denominator = atan(x) + 5.2 * y;
+    return numerator / denominator;
+}
+int check_conditions(double y)
+{
     int C = (int)y;
-
-
     int cond_a = ((C % 2 == 0) == 1);
     int cond_b = (C % 3 == 0);
-
     printf("условие выполнено (1 - да, 0 - нет):\n");
     printf("а) С-чётное: %d\n", cond_a);
     printf("б) C кратно 3: %d\n", cond_b);
+    return (cond_a && cond_b) ? 1 : 0;
+}
+int main()
+{
+	setlocale(LC_CTYPE, "RUS");
+	printf("=== Задание 1 ===\n");
+    double grad ;
+    printf("Введите угол в градусах: ");
+    scanf("%lf", &grad);
+	double sin_result = calculate_sin(grad);
+    printf("Результат: sin(%.6f градусов) = %.6f\n", grad, sin_result);
 
-    double x, y, z, v;
-	printf("Введите значения x, y, z");
-	scanf("%lf %lf %lf", &x, &y, &z);
-	double num1 = 1.0 + pow(sin(x + y), 2);
-	double den1 = fabs(x - (2.0 * y) / (1.0 + pow(x, 2) * pow(y, 2)));
-	double fraction = num1 / den1;
+	printf("\n=== Задание 2 ===\n");
+    double x, y;
+    printf("Введите значение x: \n");
+    scanf("%lf", &x);
+    printf("Введите значение y: \n");
+    scanf("%lf", &y);
 
-	double power = pow(x, fabs(y));
+	double F = calculate_F(x, y);
+	printf("x = %.6lf, F(x, y) = %.6lf\n", x, F);
 
-	double cos_ = pow(cos(atan(1.0 / z)), 2);
+	printf("\n=== Задание 3 ===\n");
 
-	v = fraction * power + cos_;
-
-	printf("\nРезультат :\n");
-	printf("x = %.4lf, y = %.4lf, z = %.4lf\n", x, y, z);
-	printf("Результат: v = %.6lf\n", v);
+	int condition_result = check_conditions(y);
+	printf("Результат проверки условий: %d\n", condition_result);
     return 0;
 }
